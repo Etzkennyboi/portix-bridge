@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(247,147,26,0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 18px rgba(247,147,26,0.7); }
+}
+
+@theme {
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-void: #030304;
+  --color-darkmatter: #0f1115;
+  --color-bitcoin: #f7931a;
+  --color-burnt: #ea580c;
+  --color-gold: #ffd600;
+
+  --shadow-glow: 0 0 20px rgba(247, 147, 26, 0.25);
+}
+
+:root {
+  font-family: var(--font-body);
+  color-scheme: dark;
+  background-color: var(--color-void);
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #030304 70%);
+}
+
+/* Custom glow borders & effects */
+.glow-border {
+  border: 1px solid rgba(247, 147, 26, 0.2);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glow-border:hover {
+  border-color: rgba(247, 147, 26, 0.6);
+  box-shadow: 0 0 15px rgba(247, 147, 26, 0.15);
+}
+
+.glow-text-orange {
+  text-shadow: 0 0 10px rgba(247, 147, 26, 0.5);
+}
+
+.glow-btn-orange {
+  background: linear-gradient(135deg, #f7931a 0%, #ea580c 100%);
+  box-shadow: 0 4px 20px rgba(247, 147, 26, 0.3);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+}
+.glow-btn-orange:hover {
+  box-shadow: 0 6px 25px rgba(247, 147, 26, 0.5);
+}
+
+/* Hide scrollbars but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

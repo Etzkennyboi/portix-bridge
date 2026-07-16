@@ -1,0 +1,31 @@
+{
+  "name": "Portix AI",
+  "version": "1.0.0",
+  "description": "Cross-chain USDT0, XAUt0, and CNHt0 bridging with automatic balance remediation via LayerZero OFT v2.",
+  "website": "https://xlayer-bridge-skills.vercel.app",
+  "base_url": "https://xlayer-bridge-skills.vercel.app",
+  "category": "Cross-Chain Bridge / Software Utility",
+  "payment_mode": "free",
+  "pricing": {
+    "type": "free",
+    "fee_per_call": "0"
+  },
+  "openapi_spec": "openapi.yaml",
+  "support_chains": [
+    "xlayer",
+    "ethereum",
+    "arbitrum",
+    "optimism",
+    "polygon",
+    "mantle"
+  ],
+  "support_tokens": [
+    "USDT0",
+    "XAUt0",
+    "CNHt0"
+  ],
+  "developer": {
+    "name": "Portix Team",
+    "email": "developer@portix.ai"
+  }
+}

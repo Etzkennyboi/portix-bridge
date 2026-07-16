@@ -1,0 +1,290 @@
+openapi: 3.0.3
+info:
+  title: Portix AI ASP
+  description: Cross-chain USDT0, XAUt0, and CNHt0 bridging skill pack using LayerZero OFT v2 with auto-remediation (swap-if-short).
+  version: 1.0.0
+servers:
+  - url: https://xlayer-bridge-skills.vercel.app
+    description: Production server
+paths:
+  /api/skills/bridge/intent:
+    post:
+      summary: Unified Bridge Intent Execution
+      description: Single endpoint to validate balances, trigger swap remediation if short, build ERC20 approval, and build LayerZero bridge transaction.
+      operationId: bridgeIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - srcChain
+                - dstChain
+                - token
+                - amount
+                - recipient
+                - agentAddress
+                - refundAddress
+              properties:
+                srcChain:
+                  type: string
+                  enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+                  description: Source blockchain
+                dstChain:
+                  type: string
+                  enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+                  description: Destination blockchain
+                token:
+                  type: string
+                  enum: [USDT0, XAUt0, CNHt0]
+                  description: Bridge token symbol
+                amount:
+                  type: string
+                  description: Human-readable amount to bridge (e.g., "100")
+                recipient:
+                  type: string
+                  description: Destination wallet address (0x format)
+                agentAddress:
+                  type: string
+                  description: Agent's wallet address (0x format)
+                refundAddress:
+                  type: string
+                  description: Refund address for LayerZero fee surpluses
+      responses:
+        '200':
+          description: Intent constructed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  skill:
+                    type: string
+                    example: bridge-intent
+                  status:
+                    type: string
+                    example: READY
+                  message:
+                    type: string
+                    description: Instructions for transaction execution sequence
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum: [swap, approve, send]
+                        description:
+                          type: string
+                        tx:
+                          type: object
+                          description: Ethers-compatible transaction object
+
+  /api/skills/bridge/route:
+    post:
+      summary: Get Optimal Bridge Route
+      description: Auto-selects the optimal destination or route based on transaction fees, network speed, and balances.
+      operationId: bridgeRoute
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fromChain
+                - toChainOptions
+                - token
+                - amount
+              properties:
+                fromChain:
+                  type: string
+                  enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+                toChainOptions:
+                  type: array
+                  items:
+                    type: string
+                    enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+                token:
+                  type: string
+                  enum: [USDT0, XAUt0, CNHt0]
+                amount:
+                  type: string
+                priority:
+                  type: string
+                  enum: [cheapest, fastest, balanced]
+                  default: cheapest
+      responses:
+        '200':
+          description: Route suggestion retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  skill:
+                    type: string
+                    example: bridge-route
+                  recommendedRoute:
+                    type: object
+                    properties:
+                      srcChain:
+                        type: string
+                      dstChain:
+                        type: string
+                      reason:
+                        type: string
+                      estimatedFee:
+                        type: string
+                      estimatedTime:
+                        type: string
+                      savingsVsAlternative:
+                        type: string
+                        nullable: true
+                  alternativeRoutes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        srcChain:
+                          type: string
+                        dstChain:
+                          type: string
+                        reason:
+                          type: string
+                        estimatedFee:
+                          type: string
+                        estimatedTime:
+                          type: string
+                  rebalancingSuggestion:
+                    type: object
+
+  /api/skills/bridge/status:
+    get:
+      summary: Track Cross-Chain Delivery
+      description: Polls LayerZero Scan API to track source transaction execution and destination token delivery.
+      operationId: bridgeStatus
+      parameters:
+        - name: txHash
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Source transaction hash
+        - name: srcChain
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+          description: Source blockchain
+      responses:
+        '200':
+          description: Delivery status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txHash:
+                    type: string
+                  srcChain:
+                    type: string
+                  srcConfirmed:
+                    type: boolean
+                  status:
+                    type: string
+                    enum: [PENDING, INFLIGHT, DELIVERED, FAILED]
+                  dstTxHash:
+                    type: string
+                    nullable: true
+                  layerZeroScanUrl:
+                    type: string
+                  instruction:
+                    type: string
+                  retryRecommended:
+                    type: boolean
+                  retryStrategy:
+                    type: object
+                    nullable: true
+
+  /api/skills/bridge/quote:
+    get:
+      summary: Real-Time Bridging Quote
+      description: Returns the real-time fee requirements, slippage-protected limits, and estimated time.
+      operationId: bridgeQuote
+      parameters:
+        - name: srcChain
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+        - name: dstChain
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [xlayer, ethereum, arbitrum, optimism, polygon, mantle]
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [USDT0, XAUt0, CNHt0]
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: recipient
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Quote retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  skill:
+                    type: string
+                    example: bridge-quote
+                  srcChain:
+                    type: string
+                  dstChain:
+                    type: string
+                  token:
+                    type: string
+                  amountIn:
+                    type: string
+                  amountOut:
+                    type: string
+                  minAmountOut:
+                    type: string
+                  nativeFee:
+                    type: string
+                  nativeFeeFormatted:
+                    type: string
+                  lzTokenFee:
+                    type: string
+                  transferTimeEstimate:
+                    type: string
+                  srcOFTAddress:
+                    type: string
+                  dstOFTAddress:
+                    type: string
+                  requiresApproval:
+                    type: boolean
+                  sendParam:
+                    type: array
+                    items: {}
+                  msgFee:
+                    type: array
+                    items:
+                      type: string

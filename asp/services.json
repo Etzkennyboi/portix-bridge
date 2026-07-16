@@ -1,0 +1,34 @@
+[
+  {
+    "operation": "create",
+    "serviceName": "Bridge Intent",
+    "serviceDescription": "Unified cross-chain USDT0/XAUt0/CNHt0 bridging with automatic balance remediation. Handles checks, swaps, approvals and execution in a single call.",
+    "serviceType": "A2MCP",
+    "fee": "0",
+    "endpoint": "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/intent"
+  },
+  {
+    "operation": "create",
+    "serviceName": "Bridge Route",
+    "serviceDescription": "Read-only route intelligence. Returns the recommended route, alternative routes, and cost comparison for cross-chain transfers.",
+    "serviceType": "A2MCP",
+    "fee": "0",
+    "endpoint": "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/route"
+  },
+  {
+    "operation": "create",
+    "serviceName": "Bridge Quote",
+    "serviceDescription": "Real-time fee estimation for bridging. Returns LayerZero fees, gas estimates, and total cost breakdown.",
+    "serviceType": "A2MCP",
+    "fee": "0",
+    "endpoint": "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/quote"
+  },
+  {
+    "operation": "create",
+    "serviceName": "Bridge Status",
+    "serviceDescription": "Track cross-chain delivery status. Returns PENDING/INFLIGHT/DELIVERED state and LayerZero message hash for monitoring.",
+    "serviceType": "A2MCP",
+    "fee": "0",
+    "endpoint": "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/status"
+  }
+]
