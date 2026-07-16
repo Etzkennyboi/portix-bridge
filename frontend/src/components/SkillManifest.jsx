@@ -128,7 +128,6 @@ export function SkillManifest() {
   return (
     <section id="skill-manifest" className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
-        <p className="text-[11px] font-mono text-bitcoin uppercase tracking-widest mb-3">Agent Skill Manifest</p>
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-white">
           SKILL.md Reference
         </h2>

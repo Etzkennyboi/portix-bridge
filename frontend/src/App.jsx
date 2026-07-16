@@ -77,13 +77,16 @@ export default function App() {
             </div>
           </div>
 
-          {/* Supported Chains */}
-          <div className="flex items-center justify-center gap-3 pt-4">
-            {['Ethereum', 'X Layer', 'Arbitrum', 'Optimism', 'Polygon', 'Mantle'].map(name => (
-              <span key={name} className="px-3 py-1.5 rounded-full bg-darkmatter border border-slate-800/40 text-[11px] font-mono text-slate-500">
-                {name}
-              </span>
-            ))}
+          {/* Ecosystem Logo Wall */}
+          <div className="pt-12 border-t border-slate-800/10 max-w-3xl mx-auto">
+            <p className="text-[9px] font-mono text-slate-600 uppercase tracking-widest mb-6">Supported Omnichain Ecosystems</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-25 hover:opacity-50 transition-opacity duration-300">
+              <img src="https://cdn.simpleicons.org/ethereum/ffffff" alt="Ethereum" className="h-5 w-auto" title="Ethereum" />
+              <img src="https://cdn.simpleicons.org/arbitrum/ffffff" alt="Arbitrum" className="h-5 w-auto" title="Arbitrum" />
+              <img src="https://cdn.simpleicons.org/optimism/ffffff" alt="Optimism" className="h-5 w-auto" title="Optimism" />
+              <img src="https://cdn.simpleicons.org/polygon/ffffff" alt="Polygon" className="h-5 w-auto" title="Polygon" />
+              <img src="https://cdn.simpleicons.org/mantle/ffffff" alt="Mantle" className="h-5 w-auto" title="Mantle" />
+            </div>
           </div>
         </motion.div>
       </section>

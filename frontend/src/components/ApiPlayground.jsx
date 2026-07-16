@@ -101,7 +101,6 @@ export function ApiPlayground() {
   return (
     <section id="playground" className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
-        <p className="text-[11px] font-mono text-bitcoin uppercase tracking-widest mb-3">Try The API</p>
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-white">
           API Playground
         </h2>
@@ -117,7 +116,7 @@ export function ApiPlayground() {
             <button
               key={t.id}
               onClick={() => handleTabChange(i)}
-              className={`px-5 py-3 text-sm font-heading font-medium transition-colors cursor-pointer border-b-2 ${
+              className={`px-5 py-3 text-sm font-heading font-medium transition-colors cursor-pointer border-b-2 active:scale-[0.98] ${
                 activeTab === i
                   ? 'text-bitcoin border-bitcoin bg-bitcoin/5'
                   : 'text-slate-500 border-transparent hover:text-slate-300'

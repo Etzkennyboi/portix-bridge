@@ -80,7 +80,6 @@ export function AgentFlowVisualizer() {
   return (
     <section id="agent-flow" className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
-        <p className="text-[11px] font-mono text-bitcoin uppercase tracking-widest mb-3">How AI Agents Use Portix</p>
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-white">
           Four Steps to Cross-Chain Bridge
         </h2>
@@ -93,7 +92,7 @@ export function AgentFlowVisualizer() {
             <button
               key={step.id}
               onClick={() => setActiveStep(i)}
-              className={`group w-full text-left px-4 py-4 rounded-xl border transition-all cursor-pointer ${
+              className={`group w-full text-left px-4 py-4 rounded-xl border transition-all cursor-pointer active:scale-[0.98] ${
                 activeStep === i
                   ? 'bg-darkmatter border-bitcoin/40 shadow-glow'
                   : 'bg-darkmatter/30 border-slate-800/30 hover:border-slate-700/50'
