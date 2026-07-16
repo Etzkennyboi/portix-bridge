@@ -112,6 +112,7 @@ class BridgeGuard {
       gasEst,
       src,
       agentAddress,
+      srcChain,
     });
 
     return {
@@ -187,7 +188,7 @@ class BridgeGuard {
     };
   }
 
-  buildResponse({ canExecute, usdtBalance, nativeBalance, amountWei, totalNativeNeeded, maxAffordable, gasEst, src, agentAddress }) {
+  buildResponse({ canExecute, usdtBalance, nativeBalance, amountWei, totalNativeNeeded, maxAffordable, gasEst, src, agentAddress, srcChain }) {
     if (canExecute) {
       return {
         reason: null,

@@ -64,8 +64,8 @@ const CHAINS = {
 
   optimism: {
     chainId: 10, lzEid: 30111, name: "Optimism",
-    rpc: process.env.OP_RPC || 'https://mainnet.optimism.io',
-    rpcFallbacks: ['https://optimism.publicnode.com', 'https://rpc.ankr.com/optimism'],
+    rpc: process.env.OP_RPC || 'https://optimism.drpc.org',
+    rpcFallbacks: ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 180000,
@@ -84,8 +84,8 @@ const CHAINS = {
 
   polygon: {
     chainId: 137, lzEid: 30109, name: "Polygon PoS",
-    rpc: process.env.POLYGON_RPC || 'https://polygon-rpc.com',
-    rpcFallbacks: ['https://polygon.publicnode.com', 'https://rpc.ankr.com/polygon'],
+    rpc: process.env.POLYGON_RPC || 'https://polygon.drpc.org',
+    rpcFallbacks: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com'],
     nativeSymbol: 'MATIC',
     gasConfig: {
       baseEstimate: 200000,
