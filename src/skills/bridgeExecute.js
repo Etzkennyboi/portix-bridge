@@ -7,9 +7,9 @@ const approvalCache = require('../lib/approvalCache');
 
 const TOKEN_DECIMALS = 6;
 
-async function checkAllowance(tokenAddress, ownerAddress, spenderAddress, rpcUrl, chainId) {
+async function checkAllowance(tokenAddress, ownerAddress, spenderAddress, rpcUrl, chainId, fallbacks = []) {
   try {
-    const provider = getProvider(rpcUrl, chainId);
+    const provider = getProvider(rpcUrl, chainId, fallbacks);
     const token = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
     const allowance = await token.allowance(ownerAddress, spenderAddress);
     return allowance;
@@ -85,7 +85,7 @@ async function bridgeExecute({
     if (approvalCache.hasApproval(ownerAddr, tokenConfig.token, tokenConfig.oft)) {
       // Skip approval, proceed to send
     } else {
-      const allowance = await checkAllowance(tokenConfig.token, ownerAddr, tokenConfig.oft, src.rpc, src.chainId);
+      const allowance = await checkAllowance(tokenConfig.token, ownerAddr, tokenConfig.oft, src.rpc, src.chainId, src.rpcFallbacks || []);
       
       if (allowance.lt(amountWei)) {
         const approvalGas = await gasEstimator.estimateGasCost(srcChain, 'approve');

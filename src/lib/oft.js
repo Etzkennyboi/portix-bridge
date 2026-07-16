@@ -19,11 +19,19 @@ const ERC20_ABI = [
   'function decimals() view returns (uint8)',
 ];
 
-const getProvider = (rpcUrl, chainId) => {
-  return new ethers.providers.JsonRpcProvider({
-    url: rpcUrl,
-    skipFetchSetup: true,
-  }, chainId);
+const getProvider = (rpcUrl, chainId, fallbacks = []) => {
+  return new ethers.providers.FallbackProvider(
+    [rpcUrl, ...fallbacks].map((url, i) => ({
+      provider: new ethers.providers.JsonRpcProvider(
+        { url, skipFetchSetup: true },
+        chainId
+      ),
+      priority: i + 1,
+      stallTimeout: 2000,
+      weight: 1,
+    })),
+    1 // quorum of 1 — first response wins
+  );
 };
 
 const getOFTInterface = () => new ethers.utils.Interface(OFT_ABI);

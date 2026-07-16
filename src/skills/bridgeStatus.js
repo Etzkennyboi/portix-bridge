@@ -10,7 +10,7 @@ async function bridgeStatus({ txHash, srcChain }) {
   }
   
   const src = getChain(srcChain);
-  const provider = getProvider(src.rpc, src.chainId);
+  const provider = getProvider(src.rpc, src.chainId, src.rpcFallbacks || []);
   
   // 1. Confirm source tx on-chain
   let srcConfirmed = false;

@@ -4,7 +4,8 @@
 const CHAINS = {
   ethereum: {
     chainId: 1, lzEid: 30101, name: "Ethereum",
-    rpc: process.env.ETH_RPC || 'https://eth.llamarpc.com',
+    rpc: process.env.ETH_RPC || 'https://cloudflare-eth.com',
+    rpcFallbacks: ['https://ethereum.publicnode.com', 'https://rpc.ankr.com/eth', 'https://1rpc.io/eth'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 210000,
@@ -24,6 +25,7 @@ const CHAINS = {
   xlayer: {
     chainId: 196, lzEid: 30274, name: "X Layer",
     rpc: process.env.XLAYER_RPC || 'https://rpc.xlayer.tech',
+    rpcFallbacks: ['https://xlayerrpc.okx.com'],
     nativeSymbol: 'OKB',
     gasConfig: {
       baseEstimate: 150000,
@@ -43,6 +45,7 @@ const CHAINS = {
   arbitrum: {
     chainId: 42161, lzEid: 30110, name: "Arbitrum One",
     rpc: process.env.ARB_RPC || 'https://arb1.arbitrum.io/rpc',
+    rpcFallbacks: ['https://arbitrum.publicnode.com', 'https://rpc.ankr.com/arbitrum'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 1000000,
@@ -62,6 +65,7 @@ const CHAINS = {
   optimism: {
     chainId: 10, lzEid: 30111, name: "Optimism",
     rpc: process.env.OP_RPC || 'https://mainnet.optimism.io',
+    rpcFallbacks: ['https://optimism.publicnode.com', 'https://rpc.ankr.com/optimism'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 180000,
@@ -81,6 +85,7 @@ const CHAINS = {
   polygon: {
     chainId: 137, lzEid: 30109, name: "Polygon PoS",
     rpc: process.env.POLYGON_RPC || 'https://polygon-rpc.com',
+    rpcFallbacks: ['https://polygon.publicnode.com', 'https://rpc.ankr.com/polygon'],
     nativeSymbol: 'MATIC',
     gasConfig: {
       baseEstimate: 200000,
@@ -100,6 +105,7 @@ const CHAINS = {
   mantle: {
     chainId: 5000, lzEid: 30181, name: "Mantle",
     rpc: process.env.MANTLE_RPC || 'https://rpc.mantle.xyz',
+    rpcFallbacks: ['https://mantle.publicnode.com'],
     nativeSymbol: 'MNT',
     gasConfig: {
       baseEstimate: 160000,

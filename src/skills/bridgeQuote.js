@@ -21,7 +21,7 @@ async function bridgeQuote({ srcChain, dstChain, token, amount, recipient }) {
     throw new Error(`Token ${token} not supported on ${srcChain}`);
   }
 
-  const provider  = getProvider(src.rpc, src.chainId);
+  const provider  = getProvider(src.rpc, src.chainId, src.rpcFallbacks || []);
   const oft       = new ethers.Contract(tokenConfig.oft, OFT_ABI, provider);
   const amountWei = ethers.utils.parseUnits(amount, TOKEN_DECIMALS);
 

@@ -29,7 +29,7 @@ class BridgeGuard {
     }
 
     // Fetch balances
-    const provider = getProvider(src.rpc, src.chainId);
+    const provider = getProvider(src.rpc, src.chainId, src.rpcFallbacks || []);
     const usdtContract = new ethers.Contract(tokenConfig.token, ERC20_ABI, provider);
 
     const [usdtBalance, nativeBalance] = await Promise.all([
@@ -231,7 +231,7 @@ class BridgeGuard {
           type: 'SWAP_REQUIRED',
           skill: 'xlayer-bridge-swap',
           params: {
-            chain: src.name.toLowerCase().replace(' ', ''),
+            chain: srcChain,
             amountUsdt: ethers.utils.formatUnits(shortfall, TOKEN_DECIMALS),
             agentAddress
           }
