@@ -11,7 +11,7 @@ import './index.css';
 
 export default function App() {
   return (
-    <div className="min-h-screen w-full" style={{ background: 'radial-gradient(ellipse at 50% -10%, #1c1149 0%, #030304 60%)' }}>
+    <div className="min-h-screen w-full" style={{ background: 'radial-gradient(ellipse at 50% -10%, #171719 0%, #000000 60%)' }}>
       <Header />
 
       {/* ── HERO ── */}
@@ -29,7 +29,7 @@ export default function App() {
 
           <h1 className="font-heading font-bold text-5xl md:text-6xl lg:text-7xl text-white leading-tight tracking-tight">
             Cross-Chain Bridge<br />
-            <span style={{ background: 'linear-gradient(135deg, #f7931a, #ffd600)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span style={{ background: 'linear-gradient(135deg, #ffffff, #a1a1aa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               for AI Agents
             </span>
           </h1>
