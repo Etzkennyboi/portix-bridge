@@ -4,8 +4,8 @@
 const CHAINS = {
   ethereum: {
     chainId: 1, lzEid: 30101, name: "Ethereum",
-    rpc: process.env.ETH_RPC || 'https://cloudflare-eth.com',
-    rpcFallbacks: ['https://ethereum.publicnode.com', 'https://rpc.ankr.com/eth', 'https://1rpc.io/eth'],
+    rpc: process.env.ETH_RPC || 'https://eth.drpc.org',
+    rpcFallbacks: ['https://ethereum-rpc.publicnode.com', 'https://1rpc.io/eth'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 210000,
