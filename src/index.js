@@ -83,6 +83,26 @@ app.post('/api/skills/bridge/swap', async (req, res) => {
   }
 });
 
+// Root landing info
+app.get('/', (_req, res) => {
+  res.json({
+    name: "Portix AI",
+    role: "Agent Service Provider (ASP)",
+    description: "Cross-chain USDT0, XAUt0, and CNHt0 bridging via LayerZero OFT v2 with auto-remediation.",
+    manifest: "/SKILL.md",
+    health: "/health",
+    endpoints: {
+      intent: "POST /api/skills/bridge/intent",
+      check: "POST /api/skills/bridge/check",
+      quote: "GET /api/skills/bridge/quote",
+      execute: "POST /api/skills/bridge/execute",
+      status: "GET /api/skills/bridge/status",
+      route: "POST /api/skills/bridge/route",
+      swap: "POST /api/skills/bridge/swap"
+    }
+  });
+});
+
 // Agent manifest
 app.get('/SKILL.md', (_req, res) => {
   res.sendFile(path.join(__dirname, '../SKILL.md'));
