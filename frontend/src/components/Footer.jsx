@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t border-slate-800/30 py-10 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-3">
-          <img src={logoImg} alt="Portix AI Logo" className="w-7 h-7 rounded-lg object-cover border border-slate-800" />
+          <img src={logoImg} alt="Portix AI Logo" className="w-7 h-7 rounded-lg object-cover border border-slate-800 invert" />
 
           <div>
             <p className="text-xs font-heading text-white">Portix AI</p>
