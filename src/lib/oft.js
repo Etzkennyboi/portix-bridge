@@ -23,7 +23,7 @@ const getProvider = (rpcUrl, chainId, fallbacks = []) => {
   return new ethers.providers.FallbackProvider(
     [rpcUrl, ...fallbacks].map((url, i) => ({
       provider: new ethers.providers.JsonRpcProvider(
-        { url, skipFetchSetup: true },
+        url,
         chainId
       ),
       priority: i + 1,

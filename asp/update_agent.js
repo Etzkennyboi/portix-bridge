@@ -7,7 +7,7 @@ const services = JSON.stringify([
     serviceDescription: "Unified cross-chain bridging with automatic balance remediation",
     serviceType: "A2MCP",
     fee: "0",
-    endpoint: "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/intent"
+    endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/intent"
   },
   {
     operation: "create",
@@ -15,7 +15,7 @@ const services = JSON.stringify([
     serviceDescription: "Route intelligence and cost comparison",
     serviceType: "A2MCP",
     fee: "0",
-    endpoint: "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/route"
+    endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/route"
   },
   {
     operation: "create",
@@ -23,7 +23,7 @@ const services = JSON.stringify([
     serviceDescription: "Real-time fee estimation",
     serviceType: "A2MCP",
     fee: "0",
-    endpoint: "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/quote"
+    endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/quote"
   },
   {
     operation: "create",
@@ -31,7 +31,7 @@ const services = JSON.stringify([
     serviceDescription: "Track cross-chain delivery status",
     serviceType: "A2MCP",
     fee: "0",
-    endpoint: "https://xlayer-bridge-skills.vercel.app/api/skills/bridge/status"
+    endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/status"
   }
 ]);
 
