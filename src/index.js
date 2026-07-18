@@ -28,7 +28,7 @@ const x402Challenge = (res) => {
         scheme: "exact",
         network: "eip155:196",
         amount: "0",
-        asset: "0x0000000000000000000000000000000000000000",
+        asset: "0x779ded0c9e1022225f8e0630b35a9b54be713736",
         payTo: "0x21018cc83e85bd32f8971fc2a143ec96984eecdc"
       }
     ]
