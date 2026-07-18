@@ -38,14 +38,43 @@ app.post('/api/skills/bridge/check', async (req, res) => {
   }
 });
 
-// Skill 1: Quote (free)
-app.get('/api/skills/bridge/quote', async (req, res) => {
+// Skill 1: Quote (free with x402 challenge)
+const quoteHandler = async (req, res) => {
+  const params = {
+    srcChain: req.query.srcChain || req.body.srcChain || req.query.sourceChain || req.body.sourceChain,
+    dstChain: req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain,
+    token: req.query.token || req.body.token || req.query.tokenSymbol || req.body.tokenSymbol,
+    amount: req.query.amount || req.body.amount,
+    recipient: req.query.recipient || req.body.recipient || "0x0000000000000000000000000000000000000000"
+  };
+
+  // If PAYMENT-SIGNATURE header is missing, return 402 challenge
+  if (!req.headers['payment-signature']) {
+    const challenge = {
+      accepts: [
+        {
+          scheme: "exact",
+          network: "eip155:196",
+          amount: "0",
+          asset: "0x0000000000000000000000000000000000000000",
+          payTo: "0x21018cc83e85bd32f8971fc2a143ec96984eecdc"
+        }
+      ]
+    };
+    const base64Challenge = Buffer.from(JSON.stringify(challenge)).toString('base64');
+    res.setHeader('PAYMENT-REQUIRED', base64Challenge);
+    return res.status(402).json(challenge);
+  }
+
   try {
-    res.json(await bridgeQuote(req.query));
+    res.json(await bridgeQuote(params));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-});
+};
+
+app.get('/api/skills/bridge/quote', quoteHandler);
+app.post('/api/skills/bridge/quote', quoteHandler);
 
 // Skill 2: Execute
 app.post('/api/skills/bridge/execute', async (req, res) => {
