@@ -20,6 +20,51 @@ app.use((req, _res, next) => {
   next();
 });
 
+const { CHAINS } = require('./config/chains');
+
+// Validate chains upfront to reject unsupported chains before x402 payment
+const validateChains = (req, res, next) => {
+  const src = req.query.srcChain || req.body.srcChain || req.query.sourceChain || req.body.sourceChain || req.query.fromChain || req.body.fromChain;
+  const dst = req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain;
+  const toOpts = req.query.toChainOptions || req.body.toChainOptions;
+  const chain = req.query.chain || req.body.chain;
+
+  const supported = Object.keys(CHAINS);
+
+  if (src && !supported.includes(src.toLowerCase())) {
+    return res.status(400).json({
+      error: `Unsupported source chain: '${src}'. Supported chains: ${supported.join(', ')}`
+    });
+  }
+
+  if (dst && !supported.includes(dst.toLowerCase())) {
+    return res.status(400).json({
+      error: `Unsupported destination chain: '${dst}'. Supported chains: ${supported.join(', ')}`
+    });
+  }
+
+  if (toOpts) {
+    const optsArray = Array.isArray(toOpts) ? toOpts : [toOpts];
+    for (const opt of optsArray) {
+      if (opt && !supported.includes(opt.toLowerCase())) {
+        return res.status(400).json({
+          error: `Unsupported destination chain option: '${opt}'. Supported chains: ${supported.join(', ')}`
+        });
+      }
+    }
+  }
+
+  if (chain && !supported.includes(chain.toLowerCase())) {
+    return res.status(400).json({
+      error: `Unsupported chain: '${chain}'. Supported chains: ${supported.join(', ')}`
+    });
+  }
+
+  next();
+};
+
+app.use(validateChains);
+
 // Helper to generate standard x402 challenge
 const x402Challenge = (res) => {
   const challenge = {

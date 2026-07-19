@@ -24,10 +24,13 @@ const getProvider = (rpcUrl, chainId, fallbacks = []) => {
     [rpcUrl, ...fallbacks].map((url, i) => ({
       provider: new ethers.providers.JsonRpcProvider(
         url,
-        chainId
+        {
+          name: `chain-${chainId}`,
+          chainId: chainId
+        }
       ),
       priority: i + 1,
-      stallTimeout: 2000,
+      stallTimeout: 3500,
       weight: 1,
     })),
     1 // quorum of 1 — first response wins

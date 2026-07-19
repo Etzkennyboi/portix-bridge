@@ -1,0 +1,40 @@
+{
+  "quote": {
+    "skill": "bridge-quote",
+    "srcChain": "ethereum",
+    "dstChain": "xlayer",
+    "token": "USDT0",
+    "amountIn": "500000000",
+    "amountOut": "500000000",
+    "minAmountOut": "500000000",
+    "nativeFee": "10713149875007",
+    "nativeFeeFormatted": "0.000010713149875007 ETH",
+    "lzTokenFee": "0",
+    "transferTimeEstimate": "30-90 seconds",
+    "srcOFTAddress": "0x6C96dE32CEa08842dcc4058c14d3aaAD7Fa41dee",
+    "dstOFTAddress": "0x94bcca6bdfd6a61817ab0e960bfede4984505554",
+    "requiresApproval": true,
+    "sendParam": [
+      30274,
+      "0x000000000000000000000000c385e2df2aa27a3fbe809e0faf7c5c357b716c63",
+      {
+        "type": "BigNumber",
+        "hex": "0x1dcd6500"
+      },
+      {
+        "type": "BigNumber",
+        "hex": "0x1dcd6500"
+      },
+      "0x",
+      "0x",
+      "0x"
+    ],
+    "msgFee": [
+      "10713149875007",
+      "0"
+    ]
+  },
+  "explanation": "This is the real-time fee estimate to bridge 500 USDT0 from Ethereum to X Layer.",
+  "expectedTime": "30-90 seconds",
+  "costEstimate": "0.000010713149875007 ETH"
+}

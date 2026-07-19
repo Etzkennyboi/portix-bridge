@@ -5,7 +5,7 @@ const CHAINS = {
   ethereum: {
     chainId: 1, lzEid: 30101, name: "Ethereum",
     rpc: process.env.ETH_RPC || 'https://eth.drpc.org',
-    rpcFallbacks: ['https://ethereum-rpc.publicnode.com', 'https://1rpc.io/eth'],
+    rpcFallbacks: ['https://ethereum-rpc.publicnode.com', 'https://1rpc.io/eth', 'https://cloudflare-eth.com', 'https://eth.llamarpc.com'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 210000,
@@ -25,7 +25,7 @@ const CHAINS = {
   xlayer: {
     chainId: 196, lzEid: 30274, name: "X Layer",
     rpc: process.env.XLAYER_RPC || 'https://rpc.xlayer.tech',
-    rpcFallbacks: ['https://xlayerrpc.okx.com'],
+    rpcFallbacks: ['https://xlayerrpc.okx.com', 'https://xlayer-rpc.publicnode.com'],
     nativeSymbol: 'OKB',
     gasConfig: {
       baseEstimate: 150000,
@@ -45,7 +45,7 @@ const CHAINS = {
   arbitrum: {
     chainId: 42161, lzEid: 30110, name: "Arbitrum One",
     rpc: process.env.ARB_RPC || 'https://arb1.arbitrum.io/rpc',
-    rpcFallbacks: ['https://arbitrum.publicnode.com', 'https://rpc.ankr.com/arbitrum'],
+    rpcFallbacks: ['https://arbitrum.publicnode.com', 'https://rpc.ankr.com/arbitrum', 'https://arbitrum-one.public.blastapi.io', 'https://1rpc.io/arb'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 1000000,
@@ -65,7 +65,7 @@ const CHAINS = {
   optimism: {
     chainId: 10, lzEid: 30111, name: "Optimism",
     rpc: process.env.OP_RPC || 'https://optimism.drpc.org',
-    rpcFallbacks: ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io'],
+    rpcFallbacks: ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io', 'https://1rpc.io/op'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 180000,
@@ -85,7 +85,7 @@ const CHAINS = {
   polygon: {
     chainId: 137, lzEid: 30109, name: "Polygon PoS",
     rpc: process.env.POLYGON_RPC || 'https://polygon.drpc.org',
-    rpcFallbacks: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com'],
+    rpcFallbacks: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon-rpc.com', 'https://polygon.llamarpc.com'],
     nativeSymbol: 'MATIC',
     gasConfig: {
       baseEstimate: 200000,
