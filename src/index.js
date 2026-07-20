@@ -234,6 +234,13 @@ app.use((err, _req, res, _next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`xlayer-bridge-skills v3 running on :${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`xlayer-bridge-skills v3 running on :${PORT}`));
+} else {
+  // Exported for testing — start the listener on a random port so tests never conflict
+  const server = app.listen(0, () => console.log(`xlayer-bridge-skills v3 running on :${PORT}`));
+  module.exports = app;
+  module.exports.server = server;
+}
 
 module.exports = app;
