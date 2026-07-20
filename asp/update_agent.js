@@ -2,35 +2,39 @@ const { execSync } = require('child_process');
 
 const services = JSON.stringify([
   {
-    operation: "create",
+    operation: "update",
+    id: "35047",
     serviceName: "Bridge Intent",
     serviceDescription: "Unified cross-chain bridging with automatic balance remediation",
     serviceType: "A2MCP",
-    fee: "0",
+    fee: "0.000001",
     endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/intent"
   },
   {
-    operation: "create",
+    operation: "update",
+    id: "35048",
     serviceName: "Bridge Route",
     serviceDescription: "Route intelligence and cost comparison",
     serviceType: "A2MCP",
-    fee: "0",
+    fee: "0.000001",
     endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/route"
   },
   {
-    operation: "create",
+    operation: "update",
+    id: "35049",
     serviceName: "Bridge Quote",
     serviceDescription: "Real-time fee estimation",
     serviceType: "A2MCP",
-    fee: "0",
+    fee: "0.000001",
     endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/quote"
   },
   {
-    operation: "create",
+    operation: "update",
+    id: "35050",
     serviceName: "Bridge Status",
     serviceDescription: "Track cross-chain delivery status",
     serviceType: "A2MCP",
-    fee: "0",
+    fee: "0.000001",
     endpoint: "https://portix-bridge-production.up.railway.app/api/skills/bridge/status"
   }
 ]);
