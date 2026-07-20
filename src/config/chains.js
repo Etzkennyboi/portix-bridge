@@ -4,8 +4,8 @@
 const CHAINS = {
   ethereum: {
     chainId: 1, lzEid: 30101, name: "Ethereum",
-    rpc: process.env.ETH_RPC || 'https://eth.drpc.org',
-    rpcFallbacks: ['https://ethereum-rpc.publicnode.com', 'https://1rpc.io/eth', 'https://cloudflare-eth.com', 'https://eth.llamarpc.com'],
+    rpc: process.env.ETH_RPC || 'https://cloudflare-eth.com',
+    rpcFallbacks: ['https://ethereum-rpc.publicnode.com', 'https://1rpc.io/eth', 'https://eth.drpc.org', 'https://eth.llamarpc.com'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 210000,
@@ -64,8 +64,8 @@ const CHAINS = {
 
   optimism: {
     chainId: 10, lzEid: 30111, name: "Optimism",
-    rpc: process.env.OP_RPC || 'https://optimism.drpc.org',
-    rpcFallbacks: ['https://optimism-rpc.publicnode.com', 'https://mainnet.optimism.io', 'https://1rpc.io/op'],
+    rpc: process.env.OP_RPC || 'https://mainnet.optimism.io',
+    rpcFallbacks: ['https://optimism-rpc.publicnode.com', 'https://optimism.drpc.org', 'https://1rpc.io/op'],
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 180000,

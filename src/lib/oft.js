@@ -22,7 +22,7 @@ const ERC20_ABI = [
 const getProvider = (rpcUrl, chainId, fallbacks = []) => {
   return new ethers.providers.FallbackProvider(
     [rpcUrl, ...fallbacks].map((url, i) => ({
-      provider: new ethers.providers.JsonRpcProvider(
+      provider: new ethers.providers.StaticJsonRpcProvider(
         url,
         {
           name: `chain-${chainId}`,

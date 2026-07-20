@@ -25,11 +25,23 @@ async function bridgeQuote({ srcChain, dstChain, token, amount, recipient }) {
   const oft       = new ethers.Contract(tokenConfig.oft, OFT_ABI, provider);
   const amountWei = ethers.utils.parseUnits(amount, TOKEN_DECIMALS);
 
+  async function retryContractCall(fn, retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await fn();
+      } catch (err) {
+        if (i === retries - 1) throw err;
+        console.warn(`Upstream RPC call failed (attempt ${i + 1}/${retries}), retrying: ${err.message}`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+
   // ── Pass 1: get expected receipt with minAmount = 0 ──────────────────────────
   // quoteOFT returns: (OFTLimit, OFTFeeDetail[], OFTReceipt)
   //   OFTReceipt = { amountSentLD, amountReceivedLD }
   const sendParamInit = buildSendParam(dst.lzEid, recipient, amountWei, 0);
-  const [, , oftReceipt] = await oft.callStatic.quoteOFT(sendParamInit);
+  const [, , oftReceipt] = await retryContractCall(() => oft.callStatic.quoteOFT(sendParamInit));
 
   // FIX: [0] = amountSentLD  [1] = amountReceivedLD (use [1] for slippage protection)
   const amountSentLD     = oftReceipt[0];
@@ -38,7 +50,7 @@ async function bridgeQuote({ srcChain, dstChain, token, amount, recipient }) {
   // ── Pass 2: build final SendParam with slippage protection ───────────────────
   const minAmountOut = amountReceivedLD;
   const sendParam    = buildSendParam(dst.lzEid, recipient, amountWei, minAmountOut);
-  const msgFee       = await oft.callStatic.quoteSend(sendParam, false);
+  const msgFee       = await retryContractCall(() => oft.callStatic.quoteSend(sendParam, false));
   const nativeFee    = msgFee[0];
 
   const dstTokenConfig = getChain(dstChain)[tokenKey];
