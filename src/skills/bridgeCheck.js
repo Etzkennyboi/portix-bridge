@@ -45,7 +45,20 @@ class BridgeGuard {
     const oftInterface = getOFTInterface();
     const oft = new ethers.Contract(tokenConfig.oft, oftInterface, provider);
     const sendParamInit = buildSendParam(dst.lzEid, recipient, amountWei, 0);
-    const [, , oftReceipt] = await oft.callStatic.quoteOFT(sendParamInit);
+
+    // Retry wrapper for transient RPC failures
+    async function retryCall(fn, retries = 3, delay = 1000) {
+      for (let i = 0; i < retries; i++) {
+        try { return await fn(); }
+        catch (err) {
+          if (i === retries - 1) throw err;
+          console.warn(`RPC retry ${i + 1}/${retries}: ${err.message}`);
+          await new Promise(r => setTimeout(r, delay));
+        }
+      }
+    }
+
+    const [, , oftReceipt] = await retryCall(() => oft.callStatic.quoteOFT(sendParamInit));
 
     // FIX BUG 1: oftReceipt[0] = amountSentLD, oftReceipt[1] = amountReceivedLD
     // Use amountReceivedLD as minAmountOut for slippage protection
@@ -55,7 +68,7 @@ class BridgeGuard {
 
     // Second call: quoteSend with real slippage-protected sendParam
     const sendParam = buildSendParam(dst.lzEid, recipient, amountWei, minAmountOut);
-    const msgFee    = await oft.callStatic.quoteSend(sendParam, false);
+    const msgFee    = await retryCall(() => oft.callStatic.quoteSend(sendParam, false));
     const nativeFee = msgFee[0]; // native token fee in wei
 
     // Build a simulation object so the estimator can perform a real provider.estimateGas()

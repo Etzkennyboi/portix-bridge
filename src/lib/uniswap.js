@@ -30,7 +30,7 @@ class UniswapService {
     const { getChain } = require('../config/chains');
     const { getProvider } = require('./oft');
     const chain = getChain(chainKey);
-    const provider = getProvider(chain.rpc);
+    const provider = getProvider(chain.rpc, chain.chainId, chain.rpcFallbacks || []);
     
     const tokenIn = WETH[chainKey.toLowerCase()];
     if (!tokenIn) return null;

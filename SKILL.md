@@ -1,7 +1,9 @@
 # xlayer-bridge-skills
 
-version: 3.0.0
-base_url: https://xlayer-bridge-skills.vercel.app
+version: 3.2.0
+base_url: https://portix-bridge-production.up.railway.app
+supported_chains: ethereum|xlayer|arbitrum|optimism|polygon|mantle
+supported_tokens: USDT0
 
 ## Agent Intelligence Patterns
 
@@ -32,8 +34,8 @@ description: >
   ERC20 approve tx, and builds the LayerZero bridge tx.
 params:
   - srcChain: xlayer|ethereum|arbitrum|polygon|optimism|mantle
-  - dstChain: (same options)
-  - token: USDT0|XAUt0|CNHt0
+  - dstChain: xlayer|ethereum|arbitrum|polygon|optimism|mantle (must differ from srcChain)
+  - token: USDT0
   - amount: string (human-readable, e.g. "100")
   - recipient: string (0x address on destination)
   - agentAddress: string (agent's wallet address)

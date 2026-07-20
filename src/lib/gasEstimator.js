@@ -32,7 +32,7 @@ class GasEstimator {
     }
 
     try {
-      const provider = getProvider(chain.rpc);
+      const provider = getProvider(chain.rpc, chain.chainId, chain.rpcFallbacks || []);
       const aggregator = new ethers.Contract(feedAddress, AGGREGATOR_ABI, provider);
       const { answer } = await aggregator.latestRoundData();
       return parseFloat(ethers.utils.formatUnits(answer, 8)); // Chainlink USD feeds are 8 decimals
@@ -48,7 +48,7 @@ class GasEstimator {
   async estimateGasCost(chainKey, txType = 'send', txData = null) {
     const { getChain } = require('../config/chains');
     const chain = getChain(chainKey);
-    const provider = getProvider(chain.rpc);
+    const provider = getProvider(chain.rpc, chain.chainId, chain.rpcFallbacks || []);
     
     // Get current gas price
     const feeData = await provider.getFeeData();

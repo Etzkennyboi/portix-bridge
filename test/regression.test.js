@@ -200,6 +200,87 @@ describe('GET/POST method parity', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+//  SECTION 8: SKILL.md content audit
+// ─────────────────────────────────────────────────────────────────────────────
+describe('SKILL.md Content Audit', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const skillContent = fs.readFileSync(path.join(__dirname, '../SKILL.md'), 'utf8');
+
+  it('base_url points to Railway — not blocked Vercel URL', () => {
+    expect(skillContent).toContain('portix-bridge-production.up.railway.app');
+    expect(skillContent).not.toContain('xlayer-bridge-skills.vercel.app');
+  });
+
+  it('does NOT advertise unsupported tokens (XAUt0, CNHt0)', () => {
+    // These tokens are not in chains.js config — advertising them causes 400 errors
+    expect(skillContent).not.toMatch(/XAUt0|CNHt0/);
+  });
+
+  it('lists all 6 supported chains correctly', () => {
+    const chains = ['ethereum', 'xlayer', 'arbitrum', 'optimism', 'polygon', 'mantle'];
+    for (const c of chains) {
+      expect(skillContent).toContain(c);
+    }
+  });
+
+  it('documents required params for bridge-quote', () => {
+    // Evaluator needs srcChain, dstChain, token, amount, recipient documented
+    expect(skillContent).toContain('srcChain');
+    expect(skillContent).toContain('dstChain');
+    expect(skillContent).toContain('token');
+    expect(skillContent).toContain('amount');
+    expect(skillContent).toContain('recipient');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  SECTION 9: getProvider chainId presence (BUG 2/3/6 regression)
+// ─────────────────────────────────────────────────────────────────────────────
+describe('getProvider chainId regression (BUG 2/3/6)', () => {
+  const fs = require('fs');
+  const path = require('path');
+
+  it('gasEstimator.js does NOT call getProvider with only one argument', () => {
+    const content = fs.readFileSync(path.join(__dirname, '../src/lib/gasEstimator.js'), 'utf8');
+    // Should not have getProvider(chain.rpc) with no chainId
+    const bareCallCount = (content.match(/getProvider\(chain\.rpc\)/g) || []).length;
+    expect(bareCallCount).toBe(0);
+  });
+
+  it('uniswap.js does NOT call getProvider with only one argument', () => {
+    const content = fs.readFileSync(path.join(__dirname, '../src/lib/uniswap.js'), 'utf8');
+    const bareCallCount = (content.match(/getProvider\(chain\.rpc\)/g) || []).length;
+    expect(bareCallCount).toBe(0);
+  });
+
+  it('bridgeStatus.js does NOT call getProvider with only one argument', () => {
+    const content = fs.readFileSync(path.join(__dirname, '../src/skills/bridgeStatus.js'), 'utf8');
+    const bareCallCount = (content.match(/getProvider\(src\.rpc\)/g) || []).length;
+    expect(bareCallCount).toBe(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  SECTION 10: Retry logic coverage (BUG 4 regression)
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Retry logic presence (BUG 4 regression)', () => {
+  const fs = require('fs');
+  const path = require('path');
+
+  it('bridgeCheck.js has retryCall/retryContractCall wrapper', () => {
+    const content = fs.readFileSync(path.join(__dirname, '../src/skills/bridgeCheck.js'), 'utf8');
+    expect(content).toMatch(/retryCall|retryContractCall/);
+  });
+
+  it('bridgeQuote.js has retryContractCall wrapper', () => {
+    const content = fs.readFileSync(path.join(__dirname, '../src/skills/bridgeQuote.js'), 'utf8');
+    expect(content).toMatch(/retryContractCall/);
+  });
+});
+
+
+// ─────────────────────────────────────────────────────────────────────────────
 //  SECTION 6: Chain config completeness
 // ─────────────────────────────────────────────────────────────────────────────
 describe('Chain Config Completeness', () => {
