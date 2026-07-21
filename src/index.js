@@ -23,41 +23,43 @@ app.use((req, _res, next) => {
 const { CHAINS } = require('./config/chains');
 
 // Validate chains upfront to reject unsupported chains before x402 payment
+const SUPPORTED_CHAINS = Object.keys(require('./config/chains').CHAINS);
+const UNSUPPORTED_CHAINS = ['base', 'bnb', 'bsc', 'avalanche', 'fantom', 'celo', 'zksync', 'scroll', 'linea', 'blast'];
+
+const chainRejectionBody = (label, chain) => ({
+  error: `Unsupported ${label}: '${chain}'. USDT0 via LayerZero OFT v2 is not deployed on this chain.`,
+  supported: SUPPORTED_CHAINS,
+  unsupported: UNSUPPORTED_CHAINS,
+  suggestion: `Use one of the supported chains: ${SUPPORTED_CHAINS.join(', ')}. Example: dstChain='optimism' or 'arbitrum'.`,
+  helpUrl: 'https://portix-bridge-production.up.railway.app/SKILL.md',
+  capability: 'This service bridges USDT0 only on chains where the official LayerZero OFT v2 contract is deployed.',
+});
+
 const validateChains = (req, res, next) => {
   const src = req.query.srcChain || req.body.srcChain || req.query.sourceChain || req.body.sourceChain || req.query.fromChain || req.body.fromChain;
   const dst = req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain;
   const toOpts = req.query.toChainOptions || req.body.toChainOptions;
   const chain = req.query.chain || req.body.chain;
 
-  const supported = Object.keys(CHAINS);
-
-  if (src && !supported.includes(src.toLowerCase())) {
-    return res.status(400).json({
-      error: `Unsupported source chain: '${src}'. Supported chains: ${supported.join(', ')}`
-    });
+  if (src && !SUPPORTED_CHAINS.includes(src.toLowerCase())) {
+    return res.status(400).json(chainRejectionBody('source chain', src));
   }
 
-  if (dst && !supported.includes(dst.toLowerCase())) {
-    return res.status(400).json({
-      error: `Unsupported destination chain: '${dst}'. Supported chains: ${supported.join(', ')}`
-    });
+  if (dst && !SUPPORTED_CHAINS.includes(dst.toLowerCase())) {
+    return res.status(400).json(chainRejectionBody('destination chain', dst));
   }
 
   if (toOpts) {
     const optsArray = Array.isArray(toOpts) ? toOpts : [toOpts];
     for (const opt of optsArray) {
-      if (opt && !supported.includes(opt.toLowerCase())) {
-        return res.status(400).json({
-          error: `Unsupported destination chain option: '${opt}'. Supported chains: ${supported.join(', ')}`
-        });
+      if (opt && !SUPPORTED_CHAINS.includes(opt.toLowerCase())) {
+        return res.status(400).json(chainRejectionBody('destination chain option', opt));
       }
     }
   }
 
-  if (chain && !supported.includes(chain.toLowerCase())) {
-    return res.status(400).json({
-      error: `Unsupported chain: '${chain}'. Supported chains: ${supported.join(', ')}`
-    });
+  if (chain && !SUPPORTED_CHAINS.includes(chain.toLowerCase())) {
+    return res.status(400).json(chainRejectionBody('chain', chain));
   }
 
   next();
@@ -202,9 +204,15 @@ app.get('/', (_req, res) => {
   res.json({
     name: "Portix AI",
     role: "Agent Service Provider (ASP)",
-    description: "Cross-chain USDT0, XAUt0, and CNHt0 bridging via LayerZero OFT v2 with auto-remediation.",
+    description: "Cross-chain USDT0 bridging via LayerZero OFT v2 with automatic balance remediation.",
     manifest: "/SKILL.md",
     health: "/health",
+    capabilities: {
+      supportedChains: SUPPORTED_CHAINS,
+      unsupportedChains: UNSUPPORTED_CHAINS,
+      supportedTokens: ["USDT0"],
+      note: "Only chains with an officially deployed LayerZero USDT0 OFT v2 contract are supported. Base, BNB, Avalanche etc. are NOT supported."
+    },
     endpoints: {
       intent: "POST /api/skills/bridge/intent",
       check: "POST /api/skills/bridge/check",

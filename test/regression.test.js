@@ -66,15 +66,23 @@ describe('Upfront Chain Validation', () => {
     const res = await request(app).get('/api/skills/bridge/quote')
       .query({ srcChain: 'base', dstChain: 'xlayer', token: 'USDT0', amount: '100' });
     expect(res.status).toBe(400);
-    expect(res.body.error).toContain("Unsupported source chain: 'base'");
-    expect(res.body.error.toLowerCase()).toContain('supported chains:');
+    // New structured response — must have error, supported array, suggestion, helpUrl
+    expect(res.body.error).toContain("source chain");
+    expect(Array.isArray(res.body.supported)).toBe(true);
+    expect(res.body.supported).toContain('ethereum');
+    expect(res.body).toHaveProperty('suggestion');
+    expect(res.body).toHaveProperty('helpUrl');
   });
 
   it('rejects unsupported destination chain with 400 — not 402', async () => {
     const res = await request(app).get('/api/skills/bridge/quote')
       .query({ srcChain: 'ethereum', dstChain: 'base', token: 'USDT0', amount: '100' });
     expect(res.status).toBe(400);
-    expect(res.body.error).toContain("Unsupported destination chain: 'base'");
+    // New structured response
+    expect(res.body.error).toContain('destination chain');
+    expect(Array.isArray(res.body.supported)).toBe(true);
+    expect(res.body.supported).not.toContain('base');
+    expect(res.body).toHaveProperty('suggestion');
   });
 
   it('rejects same src and dst chain upfront with 400', async () => {
