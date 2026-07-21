@@ -22,44 +22,44 @@ app.use((req, _res, next) => {
 
 const { CHAINS } = require('./config/chains');
 
-// Validate chains upfront to reject unsupported chains before x402 payment
-const SUPPORTED_CHAINS = Object.keys(require('./config/chains').CHAINS);
-const UNSUPPORTED_CHAINS = ['base', 'bnb', 'bsc', 'avalanche', 'fantom', 'celo', 'zksync', 'scroll', 'linea', 'blast'];
+// Explicitly declared unsupported chains — task-router must NOT assign these
+const UNSUPPORTED_CHAINS = ['base', 'bnb', 'bsc', 'avalanche', 'fantom', 'celo', 'solana', 'tron', 'zksync'];
+const SUPPORTED_CHAINS = Object.keys(CHAINS); // ['ethereum','xlayer','arbitrum','optimism','polygon','mantle']
 
-const chainRejectionBody = (label, chain) => ({
-  error: `Unsupported ${label}: '${chain}'. USDT0 via LayerZero OFT v2 is not deployed on this chain.`,
-  supported: SUPPORTED_CHAINS,
-  unsupported: UNSUPPORTED_CHAINS,
-  suggestion: `Use one of the supported chains: ${SUPPORTED_CHAINS.join(', ')}. Example: dstChain='optimism' or 'arbitrum'.`,
-  helpUrl: 'https://portix-bridge-production.up.railway.app/SKILL.md',
-  capability: 'This service bridges USDT0 only on chains where the official LayerZero OFT v2 contract is deployed.',
-});
-
+// Validate chains upfront to reject unsupported chains BEFORE x402 payment challenge
 const validateChains = (req, res, next) => {
   const src = req.query.srcChain || req.body.srcChain || req.query.sourceChain || req.body.sourceChain || req.query.fromChain || req.body.fromChain;
   const dst = req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain;
   const toOpts = req.query.toChainOptions || req.body.toChainOptions;
   const chain = req.query.chain || req.body.chain;
 
+  const buildRejectResponse = (type, value) => ({
+    error: `Unsupported ${type}: '${value}'. This service does not support ${value}.`,
+    supported: SUPPORTED_CHAINS,
+    unsupported: UNSUPPORTED_CHAINS,
+    suggestion: `Use one of the supported chains: ${SUPPORTED_CHAINS.join(', ')}. For routes similar to '${value}', try 'optimism' or 'arbitrum'.`,
+    helpUrl: 'https://portix-bridge-production.up.railway.app/'
+  });
+
   if (src && !SUPPORTED_CHAINS.includes(src.toLowerCase())) {
-    return res.status(400).json(chainRejectionBody('source chain', src));
+    return res.status(400).json(buildRejectResponse('source chain', src.toLowerCase()));
   }
 
   if (dst && !SUPPORTED_CHAINS.includes(dst.toLowerCase())) {
-    return res.status(400).json(chainRejectionBody('destination chain', dst));
+    return res.status(400).json(buildRejectResponse('destination chain', dst.toLowerCase()));
   }
 
   if (toOpts) {
     const optsArray = Array.isArray(toOpts) ? toOpts : [toOpts];
     for (const opt of optsArray) {
       if (opt && !SUPPORTED_CHAINS.includes(opt.toLowerCase())) {
-        return res.status(400).json(chainRejectionBody('destination chain option', opt));
+        return res.status(400).json(buildRejectResponse('destination chain option', opt.toLowerCase()));
       }
     }
   }
 
   if (chain && !SUPPORTED_CHAINS.includes(chain.toLowerCase())) {
-    return res.status(400).json(chainRejectionBody('chain', chain));
+    return res.status(400).json(buildRejectResponse('chain', chain.toLowerCase()));
   }
 
   next();
@@ -199,19 +199,19 @@ const swapHandler = async (req, res) => {
 app.get('/api/skills/bridge/swap', swapHandler);
 app.post('/api/skills/bridge/swap', swapHandler);
 
-// Root landing info
+// Root landing info — machine-readable capabilities for task-routers
 app.get('/', (_req, res) => {
   res.json({
     name: "Portix AI",
     role: "Agent Service Provider (ASP)",
-    description: "Cross-chain USDT0 bridging via LayerZero OFT v2 with automatic balance remediation.",
+    description: "Cross-chain USDT0 bridging via LayerZero OFT v2 with auto-remediation. Supports ethereum, xlayer, arbitrum, optimism, polygon, mantle only.",
     manifest: "/SKILL.md",
     health: "/health",
     capabilities: {
       supportedChains: SUPPORTED_CHAINS,
       unsupportedChains: UNSUPPORTED_CHAINS,
       supportedTokens: ["USDT0"],
-      note: "Only chains with an officially deployed LayerZero USDT0 OFT v2 contract are supported. Base, BNB, Avalanche etc. are NOT supported."
+      note: "Only chains with an official USDT0 OFT v2 deployment are supported. Do NOT assign tasks for base, bnb, avalanche, fantom, celo, solana, or zksync."
     },
     endpoints: {
       intent: "POST /api/skills/bridge/intent",
@@ -230,9 +230,16 @@ app.get('/SKILL.md', (_req, res) => {
   res.sendFile(path.join(__dirname, '../SKILL.md'));
 });
 
-// Health
+// Health — exposes chain support for monitoring tools
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', version: '3.2.0', features: ['intent', 'guard', 'quote', 'execute', 'status', 'route', 'swap'] });
+  res.json({
+    status: 'ok',
+    version: '3.2.0',
+    features: ['intent', 'guard', 'quote', 'execute', 'status', 'route', 'swap'],
+    supportedChains: SUPPORTED_CHAINS,
+    unsupportedChains: UNSUPPORTED_CHAINS,
+    supportedTokens: ['USDT0']
+  });
 });
 
 // Global error handler

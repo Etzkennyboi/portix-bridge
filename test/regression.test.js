@@ -62,34 +62,48 @@ describe('x402 Payment Challenge', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 describe('Upfront Chain Validation', () => {
 
-  it('rejects unsupported source chain with 400 — not 402', async () => {
+  it('rejects unsupported source chain with 400 — rich JSON body with supported[] array', async () => {
     const res = await request(app).get('/api/skills/bridge/quote')
       .query({ srcChain: 'base', dstChain: 'xlayer', token: 'USDT0', amount: '100' });
     expect(res.status).toBe(400);
-    // New structured response — must have error, supported array, suggestion, helpUrl
-    expect(res.body.error).toContain("source chain");
+    // Rich body — not just a plain string error
     expect(Array.isArray(res.body.supported)).toBe(true);
     expect(res.body.supported).toContain('ethereum');
-    expect(res.body).toHaveProperty('suggestion');
-    expect(res.body).toHaveProperty('helpUrl');
+    expect(res.body.supported).toContain('xlayer');
+    expect(res.body.suggestion).toBeDefined();
+    expect(res.body.helpUrl).toBeDefined();
+    // Must list base in unsupported
+    expect(Array.isArray(res.body.unsupported)).toBe(true);
+    expect(res.body.unsupported).toContain('base');
   });
 
-  it('rejects unsupported destination chain with 400 — not 402', async () => {
+  it('rejects unsupported destination chain with 400 — rich JSON body', async () => {
     const res = await request(app).get('/api/skills/bridge/quote')
       .query({ srcChain: 'ethereum', dstChain: 'base', token: 'USDT0', amount: '100' });
     expect(res.status).toBe(400);
-    // New structured response
-    expect(res.body.error).toContain('destination chain');
     expect(Array.isArray(res.body.supported)).toBe(true);
     expect(res.body.supported).not.toContain('base');
-    expect(res.body).toHaveProperty('suggestion');
+    expect(res.body.suggestion).toContain('optimism');
+  });
+
+  it('rejects bnb/bsc chain with 400', async () => {
+    const res = await request(app).get('/api/skills/bridge/quote')
+      .query({ srcChain: 'ethereum', dstChain: 'bnb', token: 'USDT0', amount: '100' });
+    expect(res.status).toBe(400);
+    expect(res.body.unsupported).toContain('bnb');
+  });
+
+  it('rejects avalanche chain with 400', async () => {
+    const res = await request(app).get('/api/skills/bridge/quote')
+      .query({ srcChain: 'avalanche', dstChain: 'xlayer', token: 'USDT0', amount: '100' });
+    expect(res.status).toBe(400);
+    expect(res.body.unsupported).toContain('avalanche');
   });
 
   it('rejects same src and dst chain upfront with 400', async () => {
     const res = await request(app).get('/api/skills/bridge/quote')
       .query({ srcChain: 'ethereum', dstChain: 'ethereum', token: 'USDT0', amount: '100',
                recipient: '0x0000000000000000000000000000000000000001' });
-    // Either 400 from validation OR 402 challenge — but must NOT be 500 or RPC error
     expect([400, 402]).toContain(res.status);
   });
 
@@ -98,7 +112,6 @@ describe('Upfront Chain Validation', () => {
     for (const chain of chains) {
       const res = await request(app).get('/api/skills/bridge/quote')
         .query({ srcChain: chain, dstChain: 'xlayer', token: 'USDT0', amount: '100' });
-      // Any chain other than xlayer→xlayer must NOT be a chain-validation 400
       if (chain !== 'xlayer') {
         expect(res.status).not.toBe(400);
       }
@@ -110,10 +123,51 @@ describe('Upfront Chain Validation', () => {
       fromChain: 'ethereum', toChainOptions: ['xlayer', 'base'], token: 'USDT0', amount: '100'
     });
     expect(res.status).toBe(400);
-    expect(res.body.error).toMatch(/unsupported destination chain option/i);
+    expect(Array.isArray(res.body.supported)).toBe(true);
   });
 
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  SECTION 2b: Capabilities endpoint (task-router discovery)
+// ─────────────────────────────────────────────────────────────────────────────
+describe('Capabilities Discovery (task-router readable)', () => {
+
+  it('GET / includes capabilities.supportedChains array', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('capabilities');
+    expect(Array.isArray(res.body.capabilities.supportedChains)).toBe(true);
+    expect(res.body.capabilities.supportedChains).toContain('ethereum');
+    expect(res.body.capabilities.supportedChains).toContain('xlayer');
+    expect(res.body.capabilities.supportedChains).toContain('arbitrum');
+    expect(res.body.capabilities.supportedChains).toHaveLength(6);
+  });
+
+  it('GET / capabilities.unsupportedChains explicitly lists base and bnb', async () => {
+    const res = await request(app).get('/');
+    expect(Array.isArray(res.body.capabilities.unsupportedChains)).toBe(true);
+    expect(res.body.capabilities.unsupportedChains).toContain('base');
+    expect(res.body.capabilities.unsupportedChains).toContain('bnb');
+    expect(res.body.capabilities.unsupportedChains).toContain('avalanche');
+  });
+
+  it('GET / description does NOT mention XAUt0 or CNHt0 (unsupported tokens)', async () => {
+    const res = await request(app).get('/');
+    expect(res.body.description).not.toContain('XAUt0');
+    expect(res.body.description).not.toContain('CNHt0');
+  });
+
+  it('GET /health includes supportedChains and unsupportedChains', async () => {
+    const res = await request(app).get('/health');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body.supportedChains)).toBe(true);
+    expect(Array.isArray(res.body.unsupportedChains)).toBe(true);
+    expect(res.body.unsupportedChains).toContain('base');
+  });
+
+});
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  SECTION 3: Error-response hygiene (no raw stack traces to buyer)

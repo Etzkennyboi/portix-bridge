@@ -3,12 +3,12 @@
 version: 3.2.0
 base_url: https://portix-bridge-production.up.railway.app
 supported_chains: ethereum|xlayer|arbitrum|optimism|polygon|mantle
-unsupported_chains: base|bnb|bsc|avalanche|fantom|celo|zksync|scroll|linea|blast
+unsupported_chains: base|bnb|bsc|avalanche|fantom|celo|solana|tron|zksync
 supported_tokens: USDT0
 capability_note: >
-  This service only supports chains where USDT0 LayerZero OFT v2 is officially
-  deployed. Do NOT assign Base, BNB, Avalanche, or other unlisted chains — the
-  service will reject them with HTTP 400 and a list of supported alternatives.
+  Only chains with an official USDT0 OFT v2 deployment are supported.
+  Do NOT assign tasks for base, bnb, avalanche, fantom, celo, solana, or zksync.
+  These chains will be rejected with HTTP 400 before any payment is processed.
 
 ## Agent Intelligence Patterns
 
@@ -39,7 +39,7 @@ description: >
   ERC20 approve tx, and builds the LayerZero bridge tx.
 params:
   - srcChain: ethereum|xlayer|arbitrum|optimism|polygon|mantle
-  - dstChain: ethereum|xlayer|arbitrum|optimism|polygon|mantle (must differ from srcChain; base/bnb/avalanche NOT supported)
+  - dstChain: ethereum|xlayer|arbitrum|optimism|polygon|mantle (must differ from srcChain)
   - token: USDT0
   - amount: string (human-readable, e.g. "100")
   - recipient: string (0x address on destination)
