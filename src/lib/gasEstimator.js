@@ -8,11 +8,11 @@ const AGGREGATOR_ABI = [
 
 // Chainlink Price Feed Addresses for Native/USD
 const PRICE_FEEDS = {
-  1: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',      // ETH/USD
-  196: '0xc0929281a707fc93E4528CD9A0c238b7dC791448',    // OKB/USD (X Layer)
-  42161: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',  // ETH/USD (Arbitrum)
-  10: '0x13e3F557331fb27caed73e4889E4c0ef2a3ab3e5',     // ETH/USD (Optimism)
-  137: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0',    // MATIC/USD
+  1: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',      // ETH/USD
+  196: '0xc0929281a707fc93e4528cd9a0c238b7dc791448',    // OKB/USD (X Layer)
+  42161: '0x639fe6ab55c921f74e7fac1ee960c0b6293ba612',  // ETH/USD (Arbitrum)
+  10: '0x13e3f557331fb27caed73e4889e4c0ef2a3ab3e5',     // ETH/USD (Optimism)
+  137: '0xab594600376ec9fd91f8e885dadf0ce036862de0',    // MATIC/USD
   5000: '0x0000000000000000000000000000000000000000',   // Mantle (Needs specific feed)
 };
 

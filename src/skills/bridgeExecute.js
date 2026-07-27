@@ -34,13 +34,15 @@ function buildApproveTx(tokenAddress, oftAddress, chainId, gasLimit) {
 }
 
 function buildSendTx(oftAddress, sendParam, msgFee, refundAddress, nativeFee, chainId, bufferMultiplier, gasLimit) {
-  const data = getOFTInterface().encodeFunctionData("send", [
-    sendParam, msgFee, refundAddress
-  ]);
-  
   const feeWithBuffer = ethers.BigNumber.from(nativeFee)
     .mul(Math.floor(bufferMultiplier * 100))
     .div(100);
+
+  const msgFeeWithBuffer = [feeWithBuffer.toString(), msgFee[1] || '0'];
+
+  const data = getOFTInterface().encodeFunctionData("send", [
+    sendParam, msgFeeWithBuffer, refundAddress
+  ]);
   
   return {
     to: oftAddress,
