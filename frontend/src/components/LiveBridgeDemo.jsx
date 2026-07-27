@@ -384,7 +384,10 @@ function LiveExecutionMode() {
 
       const res = await fetch('/api/skills/bridge/intent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'payment-signature': 'demo-signature'
+        },
         body: JSON.stringify(body),
       });
 
@@ -449,7 +452,9 @@ function LiveExecutionMode() {
   const pollStatus = async (txHash) => {
     add(`Checking GET /api/skills/bridge/status...`, 'info');
     try {
-      const res = await fetch(`/api/skills/bridge/status?txHash=${txHash}&srcChain=${srcChain}`);
+      const res = await fetch(`/api/skills/bridge/status?txHash=${txHash}&srcChain=${srcChain}`, {
+        headers: { 'payment-signature': 'demo-signature' }
+      });
       const data = await res.json();
       add(`Bridge Status: ${data.status}`, 'info');
       setTxStatus({ status: data.status, txHash, srcChain });
