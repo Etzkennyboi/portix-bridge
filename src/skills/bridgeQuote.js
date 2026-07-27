@@ -47,8 +47,8 @@ async function bridgeQuote({ srcChain, dstChain, token, amount, recipient }) {
   const amountSentLD     = oftReceipt[0];
   const amountReceivedLD = oftReceipt[1]; // will arrive on destination
 
-  // ── Pass 2: build final SendParam with slippage protection ───────────────────
-  const minAmountOut = amountReceivedLD;
+  // Apply 0.5% slippage tolerance for robustness against fee/price fluctuations
+  const minAmountOut = amountReceivedLD.mul(995).div(1000);
   const sendParam    = buildSendParam(dst.lzEid, recipient, amountWei, minAmountOut);
   const msgFee       = await retryContractCall(() => oft.callStatic.quoteSend(sendParam, false));
   const nativeFee    = msgFee[0];

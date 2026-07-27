@@ -35,7 +35,7 @@ function buildApproveTx(tokenAddress, oftAddress, chainId, gasLimit) {
 
 function buildSendTx(oftAddress, sendParam, msgFee, refundAddress, nativeFee, chainId, bufferMultiplier, gasLimit) {
   const feeWithBuffer = ethers.BigNumber.from(nativeFee)
-    .mul(Math.floor(bufferMultiplier * 100))
+    .mul(Math.round(bufferMultiplier * 100))
     .div(100);
 
   const msgFeeWithBuffer = [feeWithBuffer.toString(), msgFee[1] || '0'];

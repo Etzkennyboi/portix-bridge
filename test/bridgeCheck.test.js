@@ -123,6 +123,6 @@ describe('BridgeGuard Fix Verification (Fully Mocked)', () => {
   it('should correctly handle quoteOFT indexing (BUG 1)', async () => {
     const result = await bridgeGuard.check(mockParams);
     expect(result.quote.amountOut).toBe('100000000'); // Sent
-    expect(result.quote.minAmountOut).toBe('99000000'); // Received
+    expect(result.quote.minAmountOut).toBe('98505000'); // Received (with 0.5% slippage tolerance applied)
   });
 });

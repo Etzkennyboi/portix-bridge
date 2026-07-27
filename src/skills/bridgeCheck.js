@@ -64,7 +64,8 @@ class BridgeGuard {
     // Use amountReceivedLD as minAmountOut for slippage protection
     const amountSentLD     = oftReceipt[0]; // how much leaves the source
     const amountReceivedLD = oftReceipt[1]; // how much arrives at destination (after fees)
-    const minAmountOut     = amountReceivedLD;
+    // Apply 0.5% slippage tolerance for robustness against fee/price fluctuations
+    const minAmountOut     = amountReceivedLD.mul(995).div(1000);
 
     // Second call: quoteSend with real slippage-protected sendParam
     const sendParam = buildSendParam(dst.lzEid, recipient, amountWei, minAmountOut);
