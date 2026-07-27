@@ -12,7 +12,7 @@ const STEPS = [
     description: 'The AI agent fetches the skill manifest to learn what endpoints are available, what parameters they need, and the correct execution flow.',
     code: `// Agent discovers Portix AI
 const manifest = await fetch(
-  "https://xlayer-bridge-skills.vercel.app/SKILL.md"
+  "https://portix-bridge-production.up.railway.app/SKILL.md"
 );
 // Parses: endpoints, params, execution patterns`,
   },

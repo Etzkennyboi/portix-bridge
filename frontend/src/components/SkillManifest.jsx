@@ -9,9 +9,9 @@ const SKILLS = [
     endpoint: '/api/skills/bridge/intent',
     description: 'UNIFIED ENDPOINT: Call this when the user wants to bridge. Automatically checks balances, acquires USDT0 via swap if necessary, builds the ERC20 approve tx, and builds the LayerZero bridge tx.',
     params: [
-      { name: 'srcChain', type: 'string', desc: 'xlayer|ethereum|arbitrum|polygon|optimism|mantle' },
-      { name: 'dstChain', type: 'string', desc: 'Same options as srcChain' },
-      { name: 'token', type: 'string', desc: 'USDT0|XAUt0|CNHt0' },
+      { name: 'srcChain', type: 'string', desc: 'ethereum|xlayer|arbitrum|optimism|polygon|mantle' },
+      { name: 'dstChain', type: 'string', desc: 'ethereum|xlayer|arbitrum|optimism|polygon|mantle (must differ from srcChain)' },
+      { name: 'token', type: 'string', desc: 'USDT0' },
       { name: 'amount', type: 'string', desc: 'Human-readable amount (e.g. "100")' },
       { name: 'recipient', type: 'string', desc: '0x address on destination chain' },
       { name: 'agentAddress', type: 'string', desc: "Agent's wallet address" },
