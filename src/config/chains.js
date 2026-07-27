@@ -38,7 +38,7 @@ const CHAINS = {
     usdt0: {
       token: '0x779Ded0c9e1022225f8E0630b35a9b54bE713736',
       oft: '0x94bcca6bdfd6a61817ab0e960bfede4984505554',
-      requiresApproval: false,
+      requiresApproval: true,
     },
   },
 
@@ -58,7 +58,7 @@ const CHAINS = {
     usdt0: {
       token: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
       oft: '0x14E4A1B13bf7F943c8ff7C51fb60FA964A298D92',
-      requiresApproval: false,
+      requiresApproval: true,
     },
   },
 
@@ -78,7 +78,7 @@ const CHAINS = {
     usdt0: {
       token: '0x01bFF41798a0BcF287b996046Ca68b395DbC1071',
       oft: '0xF03b4d9AC1D5d1E7c4cEf54C2A313b9fe051A0aD',
-      requiresApproval: false,
+      requiresApproval: true,
     },
   },
 
@@ -98,7 +98,7 @@ const CHAINS = {
     usdt0: {
       token: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
       oft: '0x6BA10300f0DC58B7a1e4c0e41f5daBb7D7829e13',
-      requiresApproval: false,
+      requiresApproval: true,
     },
   },
 
@@ -118,7 +118,7 @@ const CHAINS = {
     usdt0: {
       token: '0x779Ded0c9e1022225f8E0630b35a9b54bE713736',
       oft: '0xcb768e263FB1C62214E7cab4AA8d036D76dc59CC',
-      requiresApproval: false,
+      requiresApproval: true,
     },
   },
 };

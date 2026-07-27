@@ -87,8 +87,8 @@ class BridgeGuard {
       .add(gasEst.gasCostWei)
       .mul(110).div(100);
 
-    // Approval status (Ethereum only)
-    let approvalRequired = tokenConfig.requiresApproval;
+    // Approval status (Required on any chain if token and oft contract addresses differ)
+    let approvalRequired = tokenConfig.token.toLowerCase() !== tokenConfig.oft.toLowerCase();
     let approvalCached   = false;
 
     if (approvalRequired) {

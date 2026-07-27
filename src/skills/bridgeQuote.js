@@ -72,7 +72,7 @@ async function bridgeQuote({ srcChain, dstChain, token, amount, recipient }) {
     transferTimeEstimate: '30-90 seconds',
     srcOFTAddress:        tokenConfig.oft,
     dstOFTAddress:        dstTokenConfig.oft,
-    requiresApproval:     tokenConfig.requiresApproval,
+    requiresApproval:     tokenConfig.token.toLowerCase() !== tokenConfig.oft.toLowerCase(),
     sendParam,
     msgFee: [nativeFee.toString(), '0'],
   };
