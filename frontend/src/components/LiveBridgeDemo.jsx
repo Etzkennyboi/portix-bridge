@@ -426,6 +426,10 @@ function LiveExecutionMode() {
       const receipt = await waitForReceipt(web3Provider, tx.hash);
       add(`Confirmed in block ${receipt.blockNumber}`, 'ok');
 
+      if (receipt.status === 0) {
+        throw new Error(`Transaction reverted on-chain. Please verify gas limit or contract status.`);
+      }
+
       const newHashes = [...txHashes, tx.hash];
       setTxHashes(newHashes);
 

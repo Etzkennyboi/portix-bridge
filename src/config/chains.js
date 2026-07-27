@@ -9,7 +9,7 @@ const CHAINS = {
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 210000,
-      approvalGas: 60000,
+      approvalGas: 80000,
       sendGas: 200000,
       congestionThreshold: 0.7,   // 0-1 normalized; matches gasEstimator output
       lowBuffer: 1.10,
@@ -29,7 +29,7 @@ const CHAINS = {
     nativeSymbol: 'OKB',
     gasConfig: {
       baseEstimate: 150000,
-      approvalGas: 45000,
+      approvalGas: 80000,
       sendGas: 200000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
@@ -69,7 +69,7 @@ const CHAINS = {
     nativeSymbol: 'ETH',
     gasConfig: {
       baseEstimate: 180000,
-      approvalGas: 55000,
+      approvalGas: 80000,
       sendGas: 220000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
@@ -89,7 +89,7 @@ const CHAINS = {
     nativeSymbol: 'MATIC',
     gasConfig: {
       baseEstimate: 200000,
-      approvalGas: 60000,
+      approvalGas: 80000,
       sendGas: 280000,
       congestionThreshold: 0.7,   // 0-1 normalized
       lowBuffer: 1.15,
@@ -109,7 +109,7 @@ const CHAINS = {
     nativeSymbol: 'MNT',
     gasConfig: {
       baseEstimate: 160000,
-      approvalGas: 50000,
+      approvalGas: 80000,
       sendGas: 210000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
