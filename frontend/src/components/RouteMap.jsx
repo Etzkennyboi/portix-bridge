@@ -102,14 +102,14 @@ export function RouteMap() {
                         transition-all duration-150 relative
                         ${isSelf
                           ? 'bg-slate-900/30 border border-slate-800/20 cursor-not-allowed'
-                          : 'bg-emerald-900/20 border border-emerald-800/30 cursor-pointer hover:border-emerald-600/50 hover:bg-emerald-900/30'
+                          : 'bg-white/5 border border-white/10 cursor-pointer hover:border-white/40 hover:bg-white/10'
                         }
                       `}
                     >
                       {isSelf ? (
                         <span className="text-slate-800">—</span>
                       ) : (
-                        <span className="text-emerald-500">✓</span>
+                        <span className="text-white">✓</span>
                       )}
                     </motion.div>
 
@@ -146,8 +146,8 @@ export function RouteMap() {
 
           {/* Legend */}
           <div className="flex items-center gap-6 mt-4 ml-24 text-[10px] font-mono">
-            <span className="flex items-center gap-1.5 text-emerald-500">
-              <span className="w-3 h-3 rounded bg-emerald-900/30 border border-emerald-800/40 flex items-center justify-center text-[8px]">✓</span>
+            <span className="flex items-center gap-1.5 text-white">
+              <span className="w-3 h-3 rounded bg-white/5 border border-white/10 flex items-center justify-center text-[8px]">✓</span>
               Supported
             </span>
             <span className="flex items-center gap-1.5 text-slate-700">

@@ -69,7 +69,7 @@ export function Header() {
                 {isActive && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-primary/10 border border-primary/20"
+                    className="absolute inset-0 rounded-lg bg-white/10 border border-white/20"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -84,7 +84,7 @@ export function Header() {
           href="https://www.okx.com/web3/marketplace/ai-agent/5119"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-800/40 bg-emerald-950/20 hover:border-emerald-600/50 transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-800/40 bg-slate-900/20 hover:border-slate-600/50 transition-colors"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-[11px] font-mono text-emerald-400">Agent #5119</span>

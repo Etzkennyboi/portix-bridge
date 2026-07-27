@@ -3,8 +3,8 @@
 
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(249,115,22,0.25); }
-  50%       { opacity: 0.7; box-shadow: 0 0 22px rgba(249,115,22,0.50); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(255,255,255,0.15); }
+  50%       { opacity: 0.7; box-shadow: 0 0 22px rgba(255,255,255,0.30); }
 }
 
 @keyframes gradient-x {
@@ -33,21 +33,17 @@
   --color-darkmatter:#0c0c0e;
   --color-surface:   #111113;
 
-  /* Primary accent — vibrant orange (OKX energy) */
-  --color-primary:     #f97316;
-  --color-primary-dim: #ea580c;
-  --color-primary-glow: rgba(249, 115, 22, 0.20);
-
-  /* Secondary accent — LayerZero blue */
-  --color-accent:    #60a5fa;
-  --color-accent-dim:#3b82f6;
+  /* Primary accent — pure White */
+  --color-primary:     #ffffff;
+  --color-primary-dim: #d4d4d8;
+  --color-primary-glow: rgba(255, 255, 255, 0.12);
 
   /* Legacy aliases kept for backward compat */
-  --color-bitcoin: #f97316;
+  --color-bitcoin: #ffffff;
   --color-burnt:   #52525b;
   --color-gold:    #e4e4e7;
 
-  /* Per-chain colours */
+  /* Per-chain colours (kept as visual data labels) */
   --color-chain-eth:      #627EEA;
   --color-chain-xlayer:   #0052FE;
   --color-chain-arbitrum: #12AAFF;
@@ -56,7 +52,7 @@
   --color-chain-mantle:   #a5b4fc;
 
   /* Shadows */
-  --shadow-glow:    0 0 24px rgba(249, 115, 22, 0.18);
+  --shadow-glow:    0 0 24px rgba(255, 255, 255, 0.10);
   --shadow-card:    0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
 }
 
@@ -73,28 +69,29 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: radial-gradient(ellipse at 50% -10%, #1a0a00 0%, #0a0500 35%, #000000 70%);
+  background: radial-gradient(ellipse at 50% -10%, #1e1e24 0%, #0a0a0c 35%, #000000 70%);
 }
 
 /* ── Utility: glow border ────────────────────────────────────────────────── */
 .glow-border {
-  border: 1px solid rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .glow-border:hover {
-  border-color: rgba(249, 115, 22, 0.40);
-  box-shadow: 0 0 18px rgba(249, 115, 22, 0.12);
+  border-color: rgba(255, 255, 255, 0.40);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
 }
 
-/* ── Utility: primary glow button ───────────────────────────────────────── */
+/* ── Utility: primary glow button (Inverted style: white bg, black text) ──── */
 .glow-btn-orange {
-  background: linear-gradient(135deg, #f97316, #ea580c);
-  color: #ffffff !important;
-  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.30);
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+  background: #ffffff;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .glow-btn-orange:hover {
-  box-shadow: 0 6px 30px rgba(249, 115, 22, 0.45);
+  background: #f4f4f5;
+  box-shadow: 0 6px 30px rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 .glow-btn-orange:active {
@@ -103,7 +100,7 @@ body {
 
 /* ── Utility: shimmer text ───────────────────────────────────────────────── */
 .shimmer-text {
-  background: linear-gradient(90deg, #f97316 0%, #fbbf24 40%, #f97316 80%);
+  background: linear-gradient(90deg, #ffffff 0%, #a1a1aa 40%, #ffffff 80%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -136,7 +133,7 @@ body {
   border-radius: 1rem;
 }
 .card:hover {
-  border-color: rgba(249, 115, 22, 0.15);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ── Code block ──────────────────────────────────────────────────────────── */
