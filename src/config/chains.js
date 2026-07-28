@@ -10,7 +10,7 @@ const CHAINS = {
     gasConfig: {
       baseEstimate: 210000,
       approvalGas: 80000,
-      sendGas: 200000,
+      sendGas: 300000,
       congestionThreshold: 0.7,   // 0-1 normalized; matches gasEstimator output
       lowBuffer: 1.10,
       highBuffer: 1.25,
@@ -30,7 +30,7 @@ const CHAINS = {
     gasConfig: {
       baseEstimate: 150000,
       approvalGas: 80000,
-      sendGas: 200000,
+      sendGas: 450000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
       highBuffer: 1.20,
@@ -70,7 +70,7 @@ const CHAINS = {
     gasConfig: {
       baseEstimate: 180000,
       approvalGas: 80000,
-      sendGas: 220000,
+      sendGas: 450000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
       highBuffer: 1.20,
@@ -90,7 +90,7 @@ const CHAINS = {
     gasConfig: {
       baseEstimate: 200000,
       approvalGas: 80000,
-      sendGas: 280000,
+      sendGas: 450000,
       congestionThreshold: 0.7,   // 0-1 normalized
       lowBuffer: 1.15,
       highBuffer: 1.30,
@@ -110,7 +110,7 @@ const CHAINS = {
     gasConfig: {
       baseEstimate: 160000,
       approvalGas: 80000,
-      sendGas: 210000,
+      sendGas: 450000,
       congestionThreshold: 0.6,   // 0-1 normalized
       lowBuffer: 1.10,
       highBuffer: 1.20,

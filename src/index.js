@@ -17,6 +17,9 @@ app.use(express.json());
 // Request logging
 app.use((req, _res, next) => {
   console.log(`${req.method} ${req.path}`);
+  if (req.method === 'POST') {
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+  }
   next();
 });
 
