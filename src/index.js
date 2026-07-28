@@ -98,9 +98,9 @@ const intentHandler = async (req, res) => {
       dstChain: req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain,
       token: req.query.token || req.body.token || req.query.tokenSymbol || req.body.tokenSymbol,
       amount: req.query.amount || req.body.amount,
-      recipient: req.query.recipient || req.body.recipient,
-      agentAddress: req.query.agentAddress || req.body.agentAddress,
-      refundAddress: req.query.refundAddress || req.body.refundAddress
+      recipient: (req.query.recipient || req.body.recipient || '').toLowerCase() || undefined,
+      agentAddress: (req.query.agentAddress || req.body.agentAddress || '').toLowerCase() || undefined,
+      refundAddress: (req.query.refundAddress || req.body.refundAddress || '').toLowerCase() || undefined
     };
     res.json(await bridgeIntent(params));
   } catch (err) {
@@ -114,7 +114,10 @@ app.post('/api/skills/bridge/intent', intentHandler);
 const checkHandler = async (req, res) => {
   if (!req.headers['payment-signature']) return x402Challenge(res);
   try {
-    res.json(await bridgeGuard.check(req.body));
+    const body = { ...req.body };
+    if (body.recipient) body.recipient = body.recipient.toLowerCase();
+    if (body.agentAddress) body.agentAddress = body.agentAddress.toLowerCase();
+    res.json(await bridgeGuard.check(body));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -129,7 +132,7 @@ const quoteHandler = async (req, res) => {
     dstChain: req.query.dstChain || req.body.dstChain || req.query.destChain || req.body.destChain,
     token: req.query.token || req.body.token || req.query.tokenSymbol || req.body.tokenSymbol,
     amount: req.query.amount || req.body.amount,
-    recipient: req.query.recipient || req.body.recipient || "0x0000000000000000000000000000000000000000"
+    recipient: (req.query.recipient || req.body.recipient || "0x0000000000000000000000000000000000000000").toLowerCase()
   };
 
   if (!req.headers['payment-signature']) return x402Challenge(res);
@@ -147,7 +150,11 @@ app.post('/api/skills/bridge/quote', quoteHandler);
 const executeHandler = async (req, res) => {
   if (!req.headers['payment-signature']) return x402Challenge(res);
   try {
-    res.json(await bridgeExecute(req.body));
+    const body = { ...req.body };
+    if (body.recipient) body.recipient = body.recipient.toLowerCase();
+    if (body.agentAddress) body.agentAddress = body.agentAddress.toLowerCase();
+    if (body.refundAddress) body.refundAddress = body.refundAddress.toLowerCase();
+    res.json(await bridgeExecute(body));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -194,7 +201,9 @@ app.post('/api/skills/bridge/route', routeHandler);
 const swapHandler = async (req, res) => {
   if (!req.headers['payment-signature']) return x402Challenge(res);
   try {
-    res.json(await bridgeSwap(req.body));
+    const body = { ...req.body };
+    if (body.agentAddress) body.agentAddress = body.agentAddress.toLowerCase();
+    res.json(await bridgeSwap(body));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
