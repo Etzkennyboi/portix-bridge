@@ -34,20 +34,21 @@ function buildApproveTx(tokenAddress, oftAddress, chainId, gasLimit) {
 }
 
 function buildSendTx(oftAddress, sendParam, msgFee, refundAddress, nativeFee, chainId, bufferMultiplier, gasLimit) {
-  const feeWithBuffer = ethers.BigNumber.from(nativeFee)
-    .mul(Math.round(bufferMultiplier * 100))
-    .div(100);
-
-  const msgFeeWithBuffer = [feeWithBuffer.toString(), msgFee[1] || '0'];
+  // CRITICAL: LayerZero OFT v2 enforces msg.value == msgFee.nativeFee EXACTLY.
+  // Sending a buffered (higher) value causes an on-chain revert.
+  // The buffer should only be applied to the gas price/limit, NOT the LZ fee.
+  const exactNativeFee = ethers.BigNumber.from(nativeFee);
 
   const data = getOFTInterface().encodeFunctionData("send", [
-    sendParam, msgFeeWithBuffer, refundAddress
+    sendParam,
+    [exactNativeFee.toString(), msgFee[1] || '0'],  // exact fee, NOT buffered
+    refundAddress
   ]);
   
   return {
     to: oftAddress,
     data,
-    value: feeWithBuffer.toString(),
+    value: exactNativeFee.toString(),  // tx.value MUST equal msgFee[0] exactly
     chainId,
     gasLimit: gasLimit.toString(),
     description: `Bridge via USDT0 OFT on chainId ${chainId}`
@@ -130,11 +131,11 @@ async function bridgeExecute({
       to: dstChain,
       recipient,
       nativeFeeRequired: quote.nativeFeeFormatted,
-      feeWithBuffer: `${ethers.utils.formatEther(sendTx.value)} ${src.nativeSymbol}`,
+      exactFee: `${ethers.utils.formatEther(sendTx.value)} ${src.nativeSymbol}`,
       estimatedGasCost: gasEstimate.gasCostFormatted,
       totalCost: `${ethers.utils.formatEther(totalCost)} ${src.nativeSymbol}`,
       estimatedArrival: '30-90 seconds',
-      bufferApplied: `${Math.round((bufferMultiplier - 1) * 100)}% (${gasEstimate.bufferType} congestion)`,
+      bufferApplied: `${Math.round((bufferMultiplier - 1) * 100)}% applied to gas only (LZ fee is always exact)`,
     }
   };
 }
